@@ -1,0 +1,68 @@
+.container-body
+{
+    height: 100%;
+    margin: 5px;
+    background-color: rgb(255, 255, 255);
+
+}
+.projects-headtitle
+{
+    justify-content: flex-start;
+    align-self: center;
+    color: rgb(94, 91, 91);
+    font-size: xx-large;
+    margin-bottom: 10px;
+}
+.project-li
+{
+    height: 50px;
+    border-color: gray;
+    border: solid;
+    border-width: thin;
+}
+.project-listcontainer
+{
+    width: 100%;
+}
+.todolist-list-collumn
+{
+    width: 100%;
+}
+.todolist-list-element
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: solid;
+    border-width: 0px;
+    border-top-width: thin;
+}
+.user-list
+{
+    display: flex;
+    width: 100%;
+    overflow: scroll;
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+    flex-direction: column;
+    max-height: 200px;
+}
+.user-list-element
+{
+    margin-right: 20px;
+}
+.a-button
+{
+    cursor: pointer;
+    height: 10px;
+    width: 10px;
+}
+.login-content
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+   

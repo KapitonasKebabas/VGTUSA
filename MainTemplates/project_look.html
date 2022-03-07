@@ -1,0 +1,144 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+          <div class="container-fluid container-body">
+            <div class="row">
+            <div class="col-lg-8">
+                <div class="projects-headtitle">#{{projectId}} {{projectPav}}</div>
+                <div class=" project-short-content" style="width: 100%; height: auto;">
+                    <span style="overflow-wrap: break-word;">{{project.aprasymas}}</span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="projects-headtitle">Nariai</div>
+              <div class="user-list">
+                {% for mod in modArr %}
+                  <div class="user-list-element">{{mod}} {% if userFName == mod %}<i class="fa fa-regular fa-star"></i>{% endif %}</div>
+                {% endfor %}
+              </div>
+              {% if yraList %}
+              <div class="col">
+                <form action="join_project" method="POST">
+                  {% csrf_token %}
+                  <input style="display: none;" name="userId" value="{{userId}}">
+                  <input style="display: none;" name="projectId" value="{{projectId}}">
+                  <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-success">Prisijungti</button></div>
+                </form>
+              </div>
+              {% elif NotMyProject %}
+              <div class="col">
+                <form action="leave_project" method="POST">
+                  {% csrf_token %}
+                  <input style="display: none;" name="userId" value="{{userId}}">
+                  <input style="display: none;" name="projectId" value="{{projectId}}">
+                  <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-outline-danger">Iseiti is grupes</button></div>
+                </form>
+              </div>
+              {% endif %}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                {% if userId == projectAuth%}
+              <form action="busenos_keitimas" method='POST'>
+                {% csrf_token %}
+                <div class="form-check form-check-inline">
+                  {% if busena == 0 %}<input class="form-check-input" type="radio" name="inlineRadioOptions" checked="checked" id="inlineRadio1"  value="0">{%else%}<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"  value="0">{% endif%}
+                  <label class="form-check-label" for="inlineRadio1">Aktyvus</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  {% if busena == 1 %}<input class="form-check-input" type="radio" name="inlineRadioOptions" checked="checked" id="inlineRadio2"  value="1">{%else%}<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"  value="1">{% endif%}
+                  <label class="form-check-label" for="inlineRadio2">Pabaigtas</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  {% if busena == 2 %}<input class="form-check-input" type="radio" name="inlineRadioOptions" checked="checked" id="inlineRadio3"  value="2">{%else%}<input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"  value="2">{% endif%}
+                  <label class="form-check-label" for="inlineRadio3">Atsauktas</label>
+                </div>
+                <input style="display: none;" value="{{projectId}}" name="id">
+                <button type="submit" class="btn btn-secondary">Issaugoti</button>
+              </form>
+              {% endif %}
+              </div>
+            </div>
+            {% if yraList %}
+            Prisijunkit kad matyti daugiau info
+            {% else %}
+            <!--
+            <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+                <div class="projects-headtitle">To do list</div>
+                <div class="todolist-list-collumn">
+                    <div class="todolist-list-element">
+                      <div>kazkas</div>
+                      <a class="a-button"><i class="fa fa-solid fa-arrow-right"></i></a>
+                    </div>
+                  <div class="todolist-list-element">
+                    <div>kazkur</div>
+                    <a class="a-button"><i class="fa fa-solid fa-arrow-right"></i></a>
+                  </div>
+                  <div class="todolist-list-element">
+                    <div>kazkaip</div>
+                    <a class="a-button"><i class="fa fa-solid fa-arrow-right"></i></a>
+                  </div>
+                </div>
+            </div>
+            
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+              <div class="projects-headtitle">Daroma</div>
+              <div class="todolist-list-collumn">
+                <div class="todolist-list-element">
+                  <div>kazkas</div>
+                  <a class="a-button"><i class="fa fa-solid fa-check"></i></a>
+                </div>
+              <div class="todolist-list-element">
+                <div>kazkur</div>
+                <a class="a-button"><i class="fa fa-solid fa-check"></i></a>
+              </div>
+              <div class="todolist-list-element">
+                <div>kazkaip</div>
+                <a class="a-button"><i class="fa fa-solid fa-check"></i></a>
+              </div>
+            </div>
+            </div>
+
+            <div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+              <div class="projects-headtitle">Padaryta</div>
+              <div class="todolist-list-collumn">
+                <div class="todolist-list-element">
+                  <div>kazkas</div>
+                  <a class="a-button"><i class="fa fa-solid fa-arrow-left"></i></a>
+                </div>
+              <div class="todolist-list-element">
+                <div>kazkur</div>
+                <a class="a-button"><i class="fa fa-solid fa-arrow-left"></i></a>
+              </div>
+              <div class="todolist-list-element">
+                <div>kazkaip</div>
+                <a class="a-button"><i class="fa fa-solid fa-arrow-left"></i></a>
+              </div>
+            </div>
+            </div>
+
+            </div>
+	-->
+            <div class="row">
+              <div class="projects-headtitle">Remencios imones 
+                <form action="add_uabsToProject" method="POST">
+                  {% csrf_token %}
+                  <input style="display: none;" name="projectId" value="{{projectId}}">
+                  <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-success">Prideti</button></div>
+                </form>
+              </div>
+              <div class="user-list">
+                {% for uab in projectUABs %}
+                  <div class="user-list-element">{{uab.pavadinimasUAB}} {{uab.tipas}}</div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+
+
+
+          </div>
+
+{% endblock content %}

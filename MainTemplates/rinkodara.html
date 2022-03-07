@@ -1,0 +1,45 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+          <div class="container">
+            <div class="row"  style="height: 10%;">
+                <div class="col-lg-10 projects-headtitle">Rinkodara</div>
+                <div class="col-lg-2" style="align-self: center;"><a href="toAddUAB"><button type="button" class="btn btn-success">Prideti</button></a></div>
+                <table class="table" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th scope="col">Pavadinimas</th>
+                        <th scope="col">Tipas</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Būsena</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for infoUAB in infoUABs %}
+                          <tr>
+                              <td>{{infoUAB.pavadinimas}}</td>
+                              <td>{{infoUAB.tipas}}</td>
+                              <td>{{infoUAB.email}}</td>
+                              <td style="color: green; font-weight: bold;"></i>Aktyvus</td>
+                              {% if prideti %}
+                              <form action="uab_add_project" method="post">
+                                {% csrf_token %}
+                                <td><button class="btn btn-link" type="submit" name="nothing" >Prideti</button></td>
+                                <td style="display: none;"><input value="{{projectId}}" name="projectId"></td>
+                                <td style="display: none;"><input value="{{infoUAB.id}}" name="uabId"></td>
+                              </form>
+                              {% else %}
+                              <form action="uab_lookout" method="get">
+                                <td><button class="btn btn-link" type="submit" name="nothing" >Perziureti</button></td>
+                                <td style="display: none;"><input value="{{infoUAB.id}}" name="id"></td>
+                              </form>
+                              {% endif %}
+                          </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+          </div>
+
+{% endblock content %}

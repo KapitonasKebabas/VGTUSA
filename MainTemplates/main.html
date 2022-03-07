@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+{% block content %}
+          <div class="container">
+            <div class="row"  style="height: 10%;">
+                <div class="col-lg-12 projects-headtitle">Projektai</div>
+                <table class="table" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th scope="col">Pavadinimas</th>
+                        <th scope="col">Pgr. Organizatorius/ė</th>
+                        <th scope="col">Renginio data</th>
+                        <th scope="col">Būsena</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for item in projects %}
+                        {% for itemL in projectslist %}
+                          {% if item.id == itemL %}
+                            <tr>
+                                <td>{{item.pavadinimas}}</td>
+                                <td>{{item.author_name}}</td>
+                                <td>{{item.data}}</td>
+                                {% if item.busena == 0 %}
+                                <td style="color: green; font-weight: bold;"></i>Aktyvus</td>
+                                {% elif item.busena == 1 %}
+                                <td>Pabaigtas</td>
+                                {% elif item.busena == 2 %}
+                                <td >Atsauktas</td>
+                                {% endif %}
+                                <form action="project_lookout" method="get">
+                                  <td><button class="btn btn-link" type="submit" name="nothing" >Perziureti</button></td>
+                                  <td style="display: none;"><input value="{{item.id}}" name="id"></td>
+                              </form> 
+                            </tr>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+          </div>
+{% endblock content %}
