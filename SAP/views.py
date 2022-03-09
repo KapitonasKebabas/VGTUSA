@@ -183,12 +183,15 @@ def myProjects(request):
         return render(request, 'login.html')
     userId = auth.get_user(request).id
     projects = projectSql.objects.all()
-    projectslist = userProjectsSql.objects.filter(userId=userId).last().projectsId
-    if len(projectslist) > 0:
-        if(projectslist[0]==","):
-            projectslist = projectslist[1:]
-        projectslist = projectslist.split(",")
-        projectslist = [int(x) for x in projectslist]
+    if userProjectsSql.objects.filter(userId=userId).exists():
+        projectslist = userProjectsSql.objects.filter(userId=userId).last().projectsId
+        if len(projectslist) > 0:
+            if(projectslist[0]==","):
+                projectslist = projectslist[1:]
+            projectslist = projectslist.split(",")
+            projectslist = [int(x) for x in projectslist]
+        else:
+            projectslist = [""]
     else:
         projectslist = [""]
     return render(request, 'main.html', {'projects': projects,'projectslist': projectslist})
