@@ -210,15 +210,16 @@ def projectAddHtml(request):
 def projectAdd(request):
     if not isAuth(request):
         return render(request, 'login.html')
-    if request.user.is_authenticated:
-        userId = auth.get_user(request).id
-        userName = auth.get_user(request).first_name
-        userLName = auth.get_user(request).last_name
-        userFName = userName + " " + userLName
-        name = request.POST['name']
-        textas = request.POST['text']
-        date = request.POST['date']
 
+
+    userId = auth.get_user(request).id
+    userName = auth.get_user(request).first_name
+    userLName = auth.get_user(request).last_name
+    userFName = userName + " " + userLName
+    name = request.POST['name']
+    textas = request.POST['text']
+    date = request.POST['date']
+    if projectSql.objects.filter(pavadinimas=name).exists() and projectSql.objects.filter(data=date).exists():
         projectSqlPush = projectSql(pavadinimas=name,busena=0,data=date,aprasymas=textas,author=userId,author_name=userFName,moderators=userId)
         projectSqlPush.save()
         projectId = projectSql.objects.filter(author=userId).last().id
@@ -230,11 +231,10 @@ def projectAdd(request):
             other.projectsId = "," + str(projectId)
             other.save()
 
-
         return projectlook(request, projectId)
-
     else:
-        return render(request, 'login.html')
+        return projects(request)
+
 
 def busenos_keitimas(request):
     if not isAuth(request):
