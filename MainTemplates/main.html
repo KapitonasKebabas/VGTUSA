@@ -7,8 +7,8 @@
                     <thead>
                     <tr>
                         <th scope="col">Pavadinimas</th>
-                        <th scope="col">Pgr. Organizatorius/ė</th>
-                        <th scope="col">Renginio data</th>
+                        <th class="d-none d-md-table-cell" scope="col">Pgr. Organizatorius/ė</th>
+                        <th class="d-none d-md-table-cell" scope="col">Renginio data</th>
                         <th scope="col">Būsena</th>
                         <th scope="col"></th>
                     </tr>
@@ -19,8 +19,8 @@
                           {% if item.id == itemL %}
                             <tr>
                                 <td>{{item.pavadinimas}}</td>
-                                <td>{{item.author_name}}</td>
-                                <td>{{item.data}}</td>
+                                <td class="d-none d-md-table-cell">{{item.author_name}}</td>
+                                <td class="d-none d-md-table-cell">{{item.data}}</td>
                                 {% if item.busena == 0 %}
                                 <td style="color: green; font-weight: bold;"></i>Aktyvus</td>
                                 {% elif item.busena == 1 %}
@@ -30,7 +30,7 @@
                                 {% endif %}
                                 <form action="project_lookout" method="get">
                                   {% csrf_token %}
-                                  <td><button class="btn btn-link" type="submit" name="nothing" >Perziureti</button></td>
+                                  <td><button class="btn btn-outline-success" type="submit" name="nothing" >Perziureti</button></td>
                                   <td style="display: none;"><input value="{{item.id}}" name="id"></td>
                               </form> 
                             </tr>

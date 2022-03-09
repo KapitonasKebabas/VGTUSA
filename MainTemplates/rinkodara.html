@@ -16,8 +16,8 @@
                     <tr>
                         <th scope="col">Pavadinimas</th>
                         <th scope="col">Tipas</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Būsena</th>
+                        <th class="d-none d-md-table-cell" scope="col">Email</th>
+                        <th class="d-none d-md-table-cell" scope="col">Būsena</th>
                         <th scope="col"></th>
                     </tr>
                     </thead>
@@ -26,24 +26,24 @@
                           <tr>
                               <td>{{infoUAB.pavadinimas}}</td>
                               <td>{{infoUAB.tipas}}</td>
-                              <td>{{infoUAB.email}}</td>
+                              <td class="d-none d-md-table-cell">{{infoUAB.email}}</td>
                               {% if infoUAB.busena == 0 %}
-                              <td style="color: green; font-weight: bold;"></i>Aktyvus</td>
+                              <td class="d-none d-md-table-cell" style="color: green; font-weight: bold;"></i>Aktyvus</td>
                               {% elif infoUAB.busena == 1 %}
-                              <td>Pasyvus</td>
+                              <td class="d-none d-md-table-cell">Pasyvus</td>
                               {% elif infoUAB.busena == 2 %}
-                              <td style="color: rgb(221, 12, 12); font-weight: bold;">Nekontaktuoti</td>
+                              <td class="d-none d-md-table-cell" style="color: rgb(221, 12, 12); font-weight: bold;">Nekontaktuoti</td>
                               {% endif %}
                               {% if prideti %}
                               <form action="uab_add_project" method="post">
                                 {% csrf_token %}
-                                <td><button class="btn btn-link" type="submit" name="nothing" >Prideti</button></td>
+                                <td><button class="btn btn-outline-success" type="submit" name="nothing" >Prideti</button></td>
                                 <td style="display: none;"><input value="{{projectId}}" name="projectId"></td>
                                 <td style="display: none;"><input value="{{infoUAB.id}}" name="uabId"></td>
                               </form>
                               {% else %}
                               <form action="uab_lookout" method="get">
-                                <td><button class="btn btn-link" type="submit" name="nothing" >Perziureti</button></td>
+                                <td><button class="btn btn-outline-success" type="submit" name="nothing" >Perziureti</button></td>
                                 <td style="display: none;"><input value="{{infoUAB.id}}" name="id"></td>
                               </form>
                               {% endif %}
