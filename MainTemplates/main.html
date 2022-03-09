@@ -29,6 +29,7 @@
                                 <td >Atsauktas</td>
                                 {% endif %}
                                 <form action="project_lookout" method="get">
+                                  {% csrf_token %}
                                   <td><button class="btn btn-link" type="submit" name="nothing" >Perziureti</button></td>
                                   <td style="display: none;"><input value="{{item.id}}" name="id"></td>
                               </form> 

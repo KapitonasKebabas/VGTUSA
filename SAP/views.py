@@ -20,12 +20,13 @@ from array import *
 
 # Create your views here.
 def home(request):
-    if request.user.is_authenticated:
-        return projects(request)
-    else:
+    if not isAuth(request):
         return render(request, 'login.html')
+    return projects(request)
 
 def login(request):
+    if isAuth(request):
+        return home(request)
     print("HELLO!!---->")
     if request.method == 'POST':
         username = request.POST['username']
@@ -34,7 +35,8 @@ def login(request):
         if user is not None:
             auth.login(request, user)
             print("HeRa")
-            return home(request)
+            #return home(request)
+            return redirect("home")
         else:
             messages.info(request,'wrong inputs')
             return redirect('/')
@@ -49,6 +51,8 @@ def register(request):
         email = request.POST['email']
         password1 = hashlib.sha256(request.POST['password1'].encode()).hexdigest()
         password2 = hashlib.sha256(request.POST['password2'].encode()).hexdigest()
+        firstname = request.POST['name']
+        lastname = request.POST['surname']
 
         if password1 == password2:
             if User.objects.filter(username=username).exists():
@@ -58,7 +62,7 @@ def register(request):
                 messages.info(request,'Email is taken')
                 return redirect('register')
             else:
-                user = User.objects.create_user(username=username, email=email, password=password1)
+                user = User.objects.create_user(username=username, email=email, password=password1, first_name=firstname, last_name=lastname)
                 user.save()
                 userId = User.objects.filter(username=username).last().id
                 userProjectsSqlPush = userProjectsSql(userId=userId)
@@ -77,21 +81,31 @@ def registerHtml(request):
     return render(request, 'register.html')
 
 def toHome(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     return redirect('/')
 
 def toAddUAB(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     return render(request, 'uab_add.html')
 
 def toAddUABinfo(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     uabId = request.POST['uabId']
     data = datetime.date.today()
     return render(request, 'uab_addInfo.html', {'uabId': uabId,'data': data})
 
 def toSaNariai(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     users = User.objects.all()
     return render(request, 'sa_nariai.html',  {'users': users})
 
 def projects(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     projects = projectSql.objects.all()
     projectslist = projectSql.objects.values_list('id', flat=True)
     for x in projectslist:
@@ -99,18 +113,25 @@ def projects(request):
     return render(request, 'main.html', {'projects': projects, 'projectslist': projectslist})
 
 def rinkodara(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     return rinkodaraHTML(request, False,0)
 
 def rinkodaraHTML(request, prideti, projectId):
-
+    if not isAuth(request):
+        return render(request, 'login.html')
     infoUABs = infoUABSql.objects.all()
     return render(request, 'rinkodara.html', {'infoUABs': infoUABs, 'prideti': prideti,'projectId': projectId})
 
 def project_lookout(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     id = request.GET['id']
     return projectlook(request, id)
 
 def projectlook(request, projectId):
+    if not isAuth(request):
+        return render(request, 'login.html')
     project = projectSql.objects.filter(id=projectId).last()
     busena = project.busena
     projectAuth = project.author
@@ -140,15 +161,21 @@ def projectlook(request, projectId):
     return render(request, 'project_look.html', {'project': project,'projectUABs': projectUABs,'NotMyProject': NotMyProject,'yraList': yraList, 'projectId': projectId, 'projectPav': projectPav,'modArr': modArr,'userId': userId,'projectAuth': projectAuth,'userFName': userFName,'busena': busena})
 
 def uab_lookout(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     id = request.GET['id']
     return uablook(request, id)
 
 def uablook(request, uabId):
+    if not isAuth(request):
+        return render(request, 'login.html')
     uab = infoUABSql.objects.filter(id=uabId).last()
     info = reversed(infoUABTrackerSql.objects.filter(UABid=uabId).order_by('date').all())
     return  render(request, 'uab_look.html',{'uab': uab,'info': info})
 
 def myProjects(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     userId = auth.get_user(request).id
     projects = projectSql.objects.all()
     projectslist = userProjectsSql.objects.filter(userId=userId).last().projectsId
@@ -161,13 +188,19 @@ def myProjects(request):
     return render(request, 'main.html', {'projects': projects,'projectslist': projectslist})
 
 def disconect(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     auth.logout(request)
     return redirect('/')
 
 def projectAddHtml(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     return render(request, 'project_add.html')
 
 def projectAdd(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     if request.user.is_authenticated:
         userId = auth.get_user(request).id
         userName = auth.get_user(request).first_name
@@ -197,6 +230,8 @@ def projectAdd(request):
         return render(request, 'login.html')
 
 def busenos_keitimas(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     busena = request.POST['inlineRadioOptions']
     id = request.POST['id']
 
@@ -207,6 +242,8 @@ def busenos_keitimas(request):
     return projectlook(request, id)
 
 def join_project(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     userId = request.POST['userId']
     projectId = request.POST['projectId']
     yraList = True
@@ -230,6 +267,8 @@ def join_project(request):
     return projectlook(request, projectId)
 
 def leave_project(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     userId = request.POST['userId']
     projectId = request.POST['projectId']
     print(str(projectId) + " ProjectId")
@@ -255,6 +294,8 @@ def leave_project(request):
     return projectlook(request, projectId)
 
 def uabAdd(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     pav = request.POST['name']
     tipas = request.POST['type']
     email = request.POST['email']
@@ -265,6 +306,8 @@ def uabAdd(request):
     return rinkodara(request)
 
 def uabAddInfo(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     id = request.POST['uabId']
     tekstas = request.POST['text']
     data = request.POST['date']
@@ -285,10 +328,14 @@ def uabAddInfo(request):
     return uablook(request, id)
 
 def add_uabsToProject(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     projectId = request.POST['projectId']
     return rinkodaraHTML(request, True, projectId)
 
 def uab_add_project(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     projectId = request.POST['projectId']
     uabId = request.POST['uabId']
     uab = infoUABSql.objects.filter(id=uabId).last()
