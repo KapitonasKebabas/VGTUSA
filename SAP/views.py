@@ -289,8 +289,10 @@ def leave_project(request):
     projectSqlPush.save()
 
     userSqlPush = userProjectsSql.objects.filter(userId=userId).last()
-    print(userSqlPush.projectsId.split(","))
     newStr=""
+    if userSqlPush.projectsId[0] == ",":
+        userSqlPush.projectsId = userSqlPush.projectsId[1:]
+    print(userSqlPush.projectsId.split(","))
     for x in userSqlPush.projectsId.split(","):
         print(x)
         if int(x) != int(projectId):
