@@ -36,7 +36,7 @@ def login(request):
             auth.login(request, user)
             print("HeRa")
             #return home(request)
-            return redirect("home")
+            return redirect("/")
         else:
             messages.info(request,'wrong inputs')
             return redirect('/')
