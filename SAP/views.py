@@ -179,12 +179,11 @@ def myProjects(request):
     userId = auth.get_user(request).id
     projects = projectSql.objects.all()
     projectslist = userProjectsSql.objects.filter(userId=userId).last().projectsId
-    projectslist = projectslist.split(",")
-    projectslist = [int(x) for x in projectslist]
-    print(userId)
-    for  x in projectslist:
-        print(x)
-
+    if len(projectslist) > 0:
+        projectslist = projectslist.split(",")
+        projectslist = [int(x) for x in projectslist]
+    else:
+        projectslist = [""]
     return render(request, 'main.html', {'projects': projects,'projectslist': projectslist})
 
 def disconect(request):
