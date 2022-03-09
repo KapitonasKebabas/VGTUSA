@@ -307,8 +307,9 @@ def uabAdd(request):
     tipas = request.POST['type']
     email = request.POST['email']
     nr =  request.POST['number']
+    tekstas = request.POST['tekstas']
 
-    uabPushSql = infoUABSql(pavadinimas=pav,busena=0,tipas=tipas,email=email,numeris=nr)
+    uabPushSql = infoUABSql(pavadinimas=pav,busena=0,tipas=tipas,email=email,numeris=nr,tekstas=tekstas)
     uabPushSql.save()
     return rinkodara(request)
 
@@ -396,12 +397,15 @@ def edit_uab(request):
     email = request.POST['email']
     nr = request.POST['number']
     pav = request.POST['name']
+    tekstas = request.POST['tekstas']
 
     updateUAB = infoUABSql.objects.filter(id=uabId).last()
     updateUAB.pavadinimas = pav
     updateUAB.numeris = nr
     updateUAB.email = email
     updateUAB.tipas = tipas
+    if not tekstas == "":
+        updateUAB.tekstas = tekstas
     updateUAB.save()
 
     return uablook(request, uabId)

@@ -24,17 +24,18 @@ class user_projects(models.Model):
 
 class infoUAB(models.Model):
     id = models.AutoField(primary_key=True, editable=False, null=False)
-    pavadinimas = models.CharField(max_length=50)
+    pavadinimas = models.CharField(max_length=100)
     busena = models.IntegerField()
-    tipas = models.CharField(max_length=20)
-    email = models.CharField(max_length=30)
-    numeris = models.CharField(max_length=20)
+    tipas = models.CharField(max_length=50)
+    email = models.CharField(max_length=100)
+    numeris = models.CharField(max_length=50)
+    tekstas = models.TextField()
 
 class UABinfoTracker(models.Model):
     id = models.AutoField(primary_key=True, editable=False, null=False)
     UABid = models.IntegerField()
     authId = models.IntegerField()
-    authName = models.CharField(max_length=20)
+    authName = models.CharField(max_length=50)
     tekstas = models.TextField()
     date = models.DateField()
     busena = models.IntegerField(default=0)
@@ -42,7 +43,7 @@ class UABinfoTracker(models.Model):
 class projectUABs(models.Model):
     id = models.AutoField(primary_key=True, editable=False, null=False)
     UABid = models.IntegerField()
-    pavadinimasUAB = models.CharField(max_length=50)
+    pavadinimasUAB = models.CharField(max_length=100)
     projectId = models.IntegerField()
-    pavadinimasProject = models.CharField(max_length=50)
-    tipas = models.CharField(max_length=20)
+    pavadinimasProject = models.CharField(max_length=100)
+    tipas = models.CharField(max_length=50)
