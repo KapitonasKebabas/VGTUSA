@@ -311,8 +311,9 @@ def uabAdd(request):
     nr =  request.POST['number']
     tekstas = request.POST['tekstas']
 
-    uabPushSql = infoUABSql(pavadinimas=pav,busena=0,tipas=tipas,email=email,numeris=nr,tekstas=tekstas)
-    uabPushSql.save()
+    if not infoUABSql.objects.filter(pavadinimas=pav).exists() and not infoUABSql.objects.filter(email=email).exists():
+        uabPushSql = infoUABSql(pavadinimas=pav,busena=0,tipas=tipas,email=email,numeris=nr,tekstas=tekstas)
+        uabPushSql.save()
     return rinkodara(request)
 
 def uabAddInfo(request):
