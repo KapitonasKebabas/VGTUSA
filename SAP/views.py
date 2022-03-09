@@ -224,11 +224,9 @@ def projectAdd(request):
         projectId = projectSql.objects.filter(author=userId).last().id
         print(projectId)
         
+        
         other = userProjectsSql.objects.filter(userId=userId).last()
-        if other.projectsId == "":
-            other.projectsId = str(projectId)
-            other.save()
-        else:
+        if userProjectsSql.objects.filter(userId=userId).exists():
             other.projectsId = "," + str(projectId)
             other.save()
 
