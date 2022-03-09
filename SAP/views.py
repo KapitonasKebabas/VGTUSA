@@ -68,7 +68,7 @@ def register(request):
                 userProjectsSqlPush = userProjectsSql(userId=userId)
                 userProjectsSqlPush.save()
                 messages.info(request,'user created')
-                return render(request, 'logIn.html')
+                return render(request, 'login.html')
                 
         else:
             messages.info(request,'password not matched')
