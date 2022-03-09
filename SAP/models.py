@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class infoProject(models.Model):
-    id = models.IntegerField(primary_key=True, editable=False)
+    id = models.AutoField(primary_key=True, editable=False, null=False)
     pavadinimas = models.CharField(max_length=50)
     busena = models.IntegerField()
     data = models.DateField()
@@ -23,7 +23,7 @@ class user_projects(models.Model):
     projectsId = models.TextField()
 
 class infoUAB(models.Model):
-    id = models.IntegerField(primary_key=True, editable=False)
+    id = models.AutoField(primary_key=True, editable=False, null=False)
     pavadinimas = models.CharField(max_length=50)
     busena = models.IntegerField()
     tipas = models.CharField(max_length=20)
@@ -31,7 +31,7 @@ class infoUAB(models.Model):
     numeris = models.CharField(max_length=20)
 
 class UABinfoTracker(models.Model):
-    id = models.IntegerField(primary_key=True, editable=False)
+    id = models.AutoField(primary_key=True, editable=False, null=False)
     UABid = models.IntegerField()
     authId = models.IntegerField()
     authName = models.CharField(max_length=20)
@@ -39,7 +39,7 @@ class UABinfoTracker(models.Model):
     date = models.DateField()
 
 class projectUABs(models.Model):
-    id = models.IntegerField(primary_key=True, editable=False)
+    id = models.AutoField(primary_key=True, editable=False, null=False)
     UABid = models.IntegerField()
     pavadinimasUAB = models.CharField(max_length=50)
     projectId = models.IntegerField()
