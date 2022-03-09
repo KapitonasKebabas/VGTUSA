@@ -219,7 +219,7 @@ def projectAdd(request):
     name = request.POST['name']
     textas = request.POST['text']
     date = request.POST['date']
-    if projectSql.objects.filter(pavadinimas=name).exists() and projectSql.objects.filter(data=date).exists():
+    if not projectSql.objects.filter(pavadinimas=name).exists() and not projectSql.objects.filter(data=date).exists():
         projectSqlPush = projectSql(pavadinimas=name,busena=0,data=date,aprasymas=textas,author=userId,author_name=userFName,moderators=userId)
         projectSqlPush.save()
         projectId = projectSql.objects.filter(author=userId).last().id
