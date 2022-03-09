@@ -5,9 +5,12 @@
             <form action='projectAdd' method='POST'>
                 {% csrf_token %}
                 <center><div class="projects-headtitle">Projekto kurimas</div></center>
-                <center><i class="fa fa-user w3-text-blue w3-large" style="margin-right:15px"></i><input type="text" name="name" placeholder="Pavadinimas"></center>
-                <center><i class="fa fa-key w3-text-blue w3-large" style="margin-right:10px"></i><input style="margin-top:5px" type="text" name="text" placeholder="Aprasymas"></center>
-                <center><i class="fa fa-key w3-text-blue w3-large" style="margin-right:10px"></i><input style="margin-top:5px" type="date" name="date"></center>
+                <center>Pavadinimas</center>
+                <center><input class="input-style" type="text" name="name" placeholder="Pavadinimas"></center>
+                <center>Tekstas</center>
+                <center><textarea class="input-style" name="text" placeholder="Aprasymas"></textarea></center>
+                <center>Data</center>
+                <center><input class="input-style" type="date" name="date"></center>
                 <br>
                 <center><input type="submit" class="w3-bar-item w3-button" style="
                     background-color: #6e6e6e;

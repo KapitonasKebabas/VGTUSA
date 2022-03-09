@@ -38,7 +38,7 @@ def login(request):
             #return home(request)
             return redirect("/")
         else:
-            messages.info(request,'wrong inputs')
+            messages.info(request,'Neteisingi duomenys')
             return redirect('/')
     else:
         return redirect('/')
@@ -54,25 +54,29 @@ def register(request):
         firstname = request.POST['name']
         lastname = request.POST['surname']
 
-        if password1 == password2:
-            if User.objects.filter(username=username).exists():
-                messages.info(request,'user taken')
-                return redirect('register')
-            elif User.objects.filter(email=email).exists():
-                messages.info(request,'Email is taken')
-                return redirect('register')
-            else:
-                user = User.objects.create_user(username=username, email=email, password=password1, first_name=firstname, last_name=lastname)
-                user.save()
-                userId = User.objects.filter(username=username).last().id
-                userProjectsSqlPush = userProjectsSql(userId=userId)
-                userProjectsSqlPush.save()
-                messages.info(request,'user created')
-                return render(request, 'login.html')
-                
-        else:
-            messages.info(request,'password not matched')
+        if lastname == "" or firstname == "" or email == "" or username == "":
+            messages.info(request,'Reikai užpildyti visus laukus')
             return redirect('register')
+        else:
+            if password1 == password2:
+                if User.objects.filter(username=username).exists():
+                    messages.info(request,'Vartotojas užimtas')
+                    return redirect('register')
+                elif User.objects.filter(email=email).exists():
+                    messages.info(request,'Toks paštas jau užregistruotas')
+                    return redirect('register')
+                else:
+                    user = User.objects.create_user(username=username, email=email, password=password1, first_name=firstname, last_name=lastname)
+                    user.save()
+                    userId = User.objects.filter(username=username).last().id
+                    userProjectsSqlPush = userProjectsSql(userId=userId)
+                    userProjectsSqlPush.save()
+                    messages.info(request,'Vartotojas sukurtas')
+                    return render(request, 'login.html')
+                    
+            else:
+                messages.info(request,'Slaptažodžiai neatitinka')
+                return redirect('register')
 
     else:
         return render(request, 'register.html')
@@ -95,7 +99,8 @@ def toAddUABinfo(request):
         return render(request, 'login.html')
     uabId = request.POST['uabId']
     data = datetime.date.today()
-    return render(request, 'uab_addInfo.html', {'uabId': uabId,'data': data})
+    busena = infoUABSql.objects.filter(id=uabId).last().busena
+    return render(request, 'uab_addInfo.html', {'busena': busena,'uabId': uabId,'data': data})
 
 def toSaNariai(request):
     if not isAuth(request):
@@ -180,6 +185,8 @@ def myProjects(request):
     projects = projectSql.objects.all()
     projectslist = userProjectsSql.objects.filter(userId=userId).last().projectsId
     if len(projectslist) > 0:
+        if(projectslist[0]==","):
+            projectslist = projectslist[1:]
         projectslist = projectslist.split(",")
         projectslist = [int(x) for x in projectslist]
     else:
@@ -214,12 +221,12 @@ def projectAdd(request):
         projectId = projectSql.objects.filter(author=userId).last().id
         print(projectId)
         
-        other = userProjectsSql.objects.filter(userId=userId).projectsId
-        if other == "":
-            other = str(projectId)
+        other = userProjectsSql.objects.filter(userId=userId).last()
+        if other.projectsId == "":
+            other.projectsId = str(projectId)
             other.save()
         else:
-            other = "," + str(projectId)
+            other.projectsId = "," + str(projectId)
             other.save()
 
 
@@ -310,6 +317,7 @@ def uabAddInfo(request):
     id = request.POST['uabId']
     tekstas = request.POST['text']
     data = request.POST['date']
+    busena = request.POST['inlineRadioOptions']
     fname = auth.get_user(request).first_name
     lname = auth.get_user(request).last_name
     fullname = fname + " " + lname
@@ -319,9 +327,13 @@ def uabAddInfo(request):
     if data == "":
         data = datetime.date.today()
 
+    uabBusena = infoUABSql.objects.filter(id=id).last()
+    uabBusena.busena = busena
+    uabBusena.save()
+
     check = infoUABTrackerSql.objects.filter(tekstas=tekstas).last()
     if check is None:
-        inforUabTrackerSqlPush = infoUABTrackerSql(UABid=id, tekstas=tekstas,date=data,authId=userId,authName=fullname)
+        inforUabTrackerSqlPush = infoUABTrackerSql(UABid=id, tekstas=tekstas,date=data,authId=userId,authName=fullname,busena=busena)
         inforUabTrackerSqlPush.save()
 
     return uablook(request, id)
@@ -339,16 +351,56 @@ def uab_add_project(request):
     uabId = request.POST['uabId']
     uab = infoUABSql.objects.filter(id=uabId).last()
     project = projectSql.objects.filter(id=projectId).last()
+    if not projectUABsSql.objects.filter(UABid=uabId).exists():
+        projectUABsSqlPush = projectUABsSql(UABid=uabId,pavadinimasUAB=uab.pavadinimas,projectId=projectId,pavadinimasProject=project.pavadinimas,tipas=uab.tipas)
+        projectUABsSqlPush.save()
 
-    projectUABsSqlPush = projectUABsSql(UABid=uabId,pavadinimasUAB=uab.pavadinimas,projectId=projectId,pavadinimasProject=project.pavadinimas,tipas=uab.tipas)
-    projectUABsSqlPush.save()
-
-    userId = auth.get_user(request).id
-    fname = auth.get_user(request).first_name
-    lname = auth.get_user(request).last_name
-    fullname = fname + " " + lname
-    tekstas = "Prideta prie remenciu imoniu projekte: " + str(project.pavadinimas)
-    infoUABTrackerSqlPush = infoUABTrackerSql(UABid=uabId,tekstas=tekstas,date=datetime.date.today(),authName=fullname,authId=userId)
-    infoUABTrackerSqlPush.save()
+        userId = auth.get_user(request).id
+        fname = auth.get_user(request).first_name
+        lname = auth.get_user(request).last_name
+        fullname = fname + " " + lname
+        tekstas = "Prideta prie remenciu imoniu projekte: " + str(project.pavadinimas)
+        infoUABTrackerSqlPush = infoUABTrackerSql(UABid=uabId,tekstas=tekstas,date=datetime.date.today(),authName=fullname,authId=userId)
+        infoUABTrackerSqlPush.save()
 
     return projectlook(request,projectId)
+
+def delete_project(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
+    projectId = request.POST['projectId']
+    projectSql.objects.filter(id=projectId).delete()
+    return redirect('/')
+
+def projectUab_delete(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
+    id = request.POST['id']
+    projectId = request.POST['projectId']
+    projectUABsSql.objects.filter(id=id).delete()
+    return projectlook(request, projectId)
+
+def to_edit_uab(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
+    uabId = request.POST['uabId']
+    uab = infoUABSql.objects.filter(id=uabId).last()
+    return render(request, "uab_update.html",{'uab': uab})
+
+def edit_uab(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
+    uabId = request.POST['uabId']
+    tipas = request.POST['type']
+    email = request.POST['email']
+    nr = request.POST['number']
+    pav = request.POST['name']
+
+    updateUAB = infoUABSql.objects.filter(id=uabId).last()
+    updateUAB.pavadinimas = pav
+    updateUAB.numeris = nr
+    updateUAB.email = email
+    updateUAB.tipas = tipas
+    updateUAB.save()
+
+    return uablook(request, uabId)

@@ -16,24 +16,32 @@
                   <div class="user-list-element">{{mod}} {% if userFName == mod %}<i class="fa fa-regular fa-star"></i>{% endif %}</div>
                 {% endfor %}
               </div>
-              {% if yraList %}
-              <div class="col">
-                <form action="join_project" method="POST">
-                  {% csrf_token %}
-                  <input style="display: none;" name="userId" value="{{userId}}">
-                  <input style="display: none;" name="projectId" value="{{projectId}}">
-                  <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-success">Prisijungti</button></div>
-                </form>
-              </div>
-              {% elif NotMyProject %}
-              <div class="col">
-                <form action="leave_project" method="POST">
-                  {% csrf_token %}
-                  <input style="display: none;" name="userId" value="{{userId}}">
-                  <input style="display: none;" name="projectId" value="{{projectId}}">
-                  <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-outline-danger">Iseiti is grupes</button></div>
-                </form>
-              </div>
+              {% if userId == projectAuth %}
+              <form action="delete_project" method="POST">
+                {% csrf_token %}
+                <input style="display: none;" name="projectId" value="{{projectId}}">
+              <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-outline-danger">Delete</button></div>
+              </form>
+              {% else %}
+                {% if yraList %}
+                <div class="col">
+                  <form action="join_project" method="POST">
+                    {% csrf_token %}
+                    <input style="display: none;" name="userId" value="{{userId}}">
+                    <input style="display: none;" name="projectId" value="{{projectId}}">
+                    <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-success">Prisijungti</button></div>
+                  </form>
+                </div>
+                {% elif NotMyProject %}
+                <div class="col">
+                  <form action="leave_project" method="POST">
+                    {% csrf_token %}
+                    <input style="display: none;" name="userId" value="{{userId}}">
+                    <input style="display: none;" name="projectId" value="{{projectId}}">
+                    <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-outline-danger">Iseiti is grupes</button></div>
+                  </form>
+                </div>
+                {% endif %}
               {% endif %}
               </div>
             </div>
@@ -122,18 +130,46 @@
             </div>
 	-->
             <div class="row">
-              <div class="projects-headtitle">Remencios imones 
+              <div style="width: 100%;" class="projects-headtitle">Remenčios įmonės 
                 <form action="add_uabsToProject" method="POST">
                   {% csrf_token %}
                   <input style="display: none;" name="projectId" value="{{projectId}}">
-                  <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-success">Prideti</button></div>
+                  <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-success">Pridėti įmonę</button></div>
                 </form>
               </div>
-              <div class="user-list">
-                {% for uab in projectUABs %}
+                <!--{% for uab in projectUABs %}
                   <div class="user-list-element">{{uab.pavadinimasUAB}} {{uab.tipas}}</div>
-                {% endfor %}
-              </div>
+                {% endfor %}-->
+                  {% if projectUABs|length > 0 %}
+                <table class="table" style="width: 100%;">
+                  <thead>
+                  <tr>
+                      <th scope="col">Pavadinimas</th>
+                      <th scope="col">Tipas</th>
+                      <th style="width: 10%" scope="col"></th>
+                      <th style="width: 10%"  scope="col"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for infoUAB in projectUABs %}
+                        <tr>
+                          <td>{{infoUAB.pavadinimasUAB}}</td>
+                          <td>{{infoUAB.tipas}}</td>
+                          <form action="uab_lookout" method="get">
+                            <td><button class="btn btn-outline-success" type="submit" name="nothing" >Perziureti</button></td>
+                            <td style="display: none;"><input value="{{infoUAB.UABid}}" name="id"></td>
+                          </form>
+                          <form action="projectUab_delete" method="post">
+                            {% csrf_token %}
+                            <td><button class="btn btn-outline-danger" type="submit" name="nothing" >Pasalinti</button></td>
+                            <td style="display: none;"><input value="{{infoUAB.id}}" name="id"></td>
+                            <td style="display: none;"><input value="{{infoUAB.projectId}}" name="projectId"></td>
+                          </form>
+                        </tr>
+                    {% endfor %}
+                  </tbody>
+                  </table>
+                  {% endif %}
             </div>
             {% endif %}
 

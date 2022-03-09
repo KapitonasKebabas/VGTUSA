@@ -26,5 +26,9 @@ urlpatterns = [
     path('join_project', views.join_project, name='join_project'),
     path('leave_project', views.leave_project, name='leave_project'),
     path('add_uabsToProject', views.add_uabsToProject, name='add_uabsToProject'),
-    path('uab_add_project', views.uab_add_project, name='uab_add_project')
+    path('uab_add_project', views.uab_add_project, name='uab_add_project'),
+    path('delete_project', views.delete_project, name='delete_project'),
+    path('projectUab_delete', views.projectUab_delete, name='projectUab_delete'),
+    path('to_edit_uab', views.to_edit_uab, name='to_edit_uab'),
+    path('edit_uab', views.edit_uab, name='edit_uab')
 ]

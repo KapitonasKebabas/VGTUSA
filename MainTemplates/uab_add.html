@@ -4,11 +4,15 @@
         <div class="login-content">
             <form action='uabAdd' method='POST'>
                 {% csrf_token %}
-                <center><div class="projects-headtitle">UAB pridejimas</div></center>
-                <center><i class="fa fa-user w3-text-blue w3-large" style="margin-right:15px"></i><input type="text" name="name" placeholder="Pavadinimas"></center>
-                <center><i class="fa fa-key w3-text-blue w3-large" style="margin-right:10px"></i><input style="margin-top:5px" type="text" name="type" placeholder="Tipas"></center>
-                <center><i class="fa fa-key w3-text-blue w3-large" style="margin-right:10px"></i><input style="margin-top:5px" type="email" name="email" placeholder="Email"></center>
-                <center><i class="fa fa-key w3-text-blue w3-large" style="margin-right:10px"></i><input style="margin-top:5px" type="text" name="number" placeholder="Numeris"></center>
+                <center><div class="projects-headtitle">Įmonių pridėjimas</div></center>
+                <center>Pavadinimas</center>
+                <center><input class="input-style" type="text" name="name" placeholder="Pavadinimas"></center>
+                <center>Tipas</center>
+                <center><input class="input-style" style="margin-top:5px" type="text" name="type" placeholder="Tipas"></center>
+                <center>Email</center>
+                <center><input class="input-style" style="margin-top:5px" type="email" name="email" placeholder="Email"></center>
+                <center>Numeris</center>
+                <center><input class="input-style" style="margin-top:5px" type="text" name="number" placeholder="Numeris"></center>
                 <br>
                 <center><input type="submit" class="w3-bar-item w3-button" style="
                     background-color: #6e6e6e;

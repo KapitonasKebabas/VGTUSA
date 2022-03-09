@@ -4,7 +4,13 @@
           <div class="container">
             <div class="row"  style="height: 10%;">
                 <div class="col-lg-10 projects-headtitle">Rinkodara</div>
-                <div class="col-lg-2" style="align-self: center;"><a href="toAddUAB"><button type="button" class="btn btn-success">Prideti</button></a></div>
+                {% if prideti %}
+                <form>
+                  <input type="button" style="margin-top: 1rem;" class="btn btn-outline-danger" value="Back" onclick="history.back()">
+                </form>
+                {% else %}
+                  <div class="col-lg-2" style="align-self: center;"><a href="toAddUAB"><button type="button" class="btn btn-success">Prideti</button></a></div>
+                {% endif %}
                 <table class="table" style="width: 100%;">
                     <thead>
                     <tr>
@@ -21,7 +27,13 @@
                               <td>{{infoUAB.pavadinimas}}</td>
                               <td>{{infoUAB.tipas}}</td>
                               <td>{{infoUAB.email}}</td>
+                              {% if infoUAB.busena == 0 %}
                               <td style="color: green; font-weight: bold;"></i>Aktyvus</td>
+                              {% elif infoUAB.busena == 1 %}
+                              <td>Pasyvus</td>
+                              {% elif infoUAB.busena == 2 %}
+                              <td style="color: rgb(221, 12, 12); font-weight: bold;">Nekontaktuoti</td>
+                              {% endif %}
                               {% if prideti %}
                               <form action="uab_add_project" method="post">
                                 {% csrf_token %}

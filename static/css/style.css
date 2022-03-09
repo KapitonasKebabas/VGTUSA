@@ -64,5 +64,9 @@
     justify-content: center;
     align-items: center;
 }
-
+.input-style
+{
+    width: 200px;
+    margin: 1rem;
+}
    

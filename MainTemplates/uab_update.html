@@ -1,0 +1,36 @@
+{% extends 'base.html' %} 
+{% block content %}
+        <div class="login-content">
+            <form action='edit_uab' method='POST'>
+                {% csrf_token %}
+                <center><div class="projects-headtitle">Įmonių koregavimas</div></center>
+                <center>Pavadinimas</center>
+                <center><input class="input-style" type="text" name="name" value="{{uab.pavadinimas}}"></center>
+                <center>Tipas</center>
+                <center><input class="input-style" style="margin-top:5px" type="text" name="type" value="{{uab.tipas}}"></center>
+                <center>Email</center>
+                <center><input class="input-style" style="margin-top:5px" type="email" name="email" value="{{uab.email}}"></center>
+                <center>Numeris</center>
+                <center><input class="input-style" style="margin-top:5px" type="text" name="number" value="{{uab.numeris}}"></center>
+                <br>
+                <input style="display: none;" name="uabId" value="{{uab.id}}">
+                <center><input type="submit" class="w3-bar-item w3-button" style="
+                    background-color: #6e6e6e;
+                    border: none;
+                    color: white;
+                    padding: 15px 32px;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 16px;
+                    border-radius: 50px"></center>
+            <br>
+            {% for mesage in messages %}
+        
+        <center>{{mesage}}</center>
+        
+        {% endfor %}
+        </form>
+        </div>
+
+{% endblock content %}

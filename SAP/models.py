@@ -37,6 +37,7 @@ class UABinfoTracker(models.Model):
     authName = models.CharField(max_length=20)
     tekstas = models.TextField()
     date = models.DateField()
+    busena = models.IntegerField(default=0)
 
 class projectUABs(models.Model):
     id = models.AutoField(primary_key=True, editable=False, null=False)

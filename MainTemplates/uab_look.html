@@ -5,20 +5,27 @@
           <div class="container-fluid container-body">
             <div class="row">
               <div class="col-lg-12">
-                  <div class="projects-headtitle">#{{uab.id}} {{uab.pavadinimas}}</div>
+                <div class="projects-headtitle"><div style="display: flex; justify-content: space-between;">#{{uab.id}} {{uab.pavadinimas}}
+                  <form action="to_edit_uab" method="post">
+                    {% csrf_token %}
+                    <button style="border: none; background: none;" type="submit"><i style="cursor: pointer;" class="fa fa-pencil" ></i></button>
+                    <input style="display: none;" value="{{uab.id}}"  name="uabId">
+                  </form>
+                  </div>
+                </div>
                   <div class=" project-short-content" style="width: 100%; height: auto;">
-                      <span style="overflow-wrap: break-word;">addddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+                      <!--<span style="overflow-wrap: break-word;">addddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
                           dddddddddddddddddddddddddddddddddddddd
                           asddddddddddddddddddddddd
                           asddddddddddddddddddddddddddddddddddddddwadawdasdasddd
                           s
-                      </span>
+                      </span>-->
                       {% if uab.busena == 0 %}
                       <div style="color: green; font-weight: bold;"></i>Aktyvus</div>
                       {% elif uab.busena == 1 %}
-                      <div>Pabaigtas</div>
+                      <div>Pasyvus</div>
                       {% elif uab.busena == 2 %}
-                      <div>Atsauktas</div>
+                      <div style="color: rgb(221, 12, 12); font-weight: bold;">Nekontaktuoti</div>
                       {% endif %}
                       <div>Email: {{uab.email}}</div>
                       <div>Nr: {{uab.numeris}}</div>
