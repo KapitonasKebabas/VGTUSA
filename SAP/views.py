@@ -8,14 +8,17 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import get_user_model
 import hashlib
 from django.contrib import messages
-from .models import infoProject as projectSql
+from .models import infoProject as projectSql, kodai
 from .models import user_projects as userProjectsSql
 from .models import infoUAB as infoUABSql
 from .models import UABinfoTracker as infoUABTrackerSql
 from .models import projectUABs as projectUABsSql
+from .models import kodai as kodaiSql
 from .functions import *
 import datetime
 from array import *
+import random
+import string
 #from .models import infoProject
 
 # Create your views here.
@@ -47,12 +50,23 @@ def register(request):
 
     if request.method == 'POST':
 
+        kodas = request.POST['code']
+        if not kodaiSql.objects.filter(kodas=kodas).exists():
+            messages.info(request,'Neteisingas/Negaliojantis kodas')
+            return redirect('register')
         username = request.POST['username']
         email = request.POST['email']
         password1 = hashlib.sha256(request.POST['password1'].encode()).hexdigest()
         password2 = hashlib.sha256(request.POST['password2'].encode()).hexdigest()
         firstname = request.POST['name']
         lastname = request.POST['surname']
+
+        kodasSql = kodaiSql.objects.filter(kodas=kodas).last()
+        kodasSql.kiek = kodasSql.kiek - 1
+        if kodasSql.kiek <= 0:
+            kodasSql.delete()
+        else:
+            kodasSql.save()
 
         if lastname == "" or firstname == "" or email == "" or username == "":
             messages.info(request,'Reikai užpildyti visus laukus')
@@ -412,3 +426,34 @@ def edit_uab(request):
     updateUAB.save()
 
     return uablook(request, uabId)
+
+def to_code_generator(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
+
+    kodai = kodaiSql.objects.all()
+
+    return render(request, 'code_generator.html', {'kodai': kodai})
+
+def code_generator(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
+    kiek = request.POST['kiek']
+    length = 10
+    
+    letters = string.ascii_lowercase
+    code = ''.join(random.choice(letters) for i in range(length))
+
+    codeSqlPush = kodaiSql(kodas=code,kiek=kiek)
+    codeSqlPush.save()
+
+    return redirect('to_code_generator')
+
+def delete_code(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
+
+    id = request.POST['id']
+
+    kodaiSql.objects.filter(id=id).delete()
+    return redirect('to_code_generator')

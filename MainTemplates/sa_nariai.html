@@ -11,7 +11,10 @@
                       <th scope="col"><input type="text" class="form-control" id="myInput_lname" onkeyup="myFunction(1)" placeholder="Ieškoti pagal pavardę..." title="Type in a lname"></th>
                       <th scope="col"></th>
                       <th scope="col"></th>
-                      <th scope="col"></th>
+                      <th scope="col"><form action="to_code_generator" method="post">
+                        {% csrf_token %}
+                        <input type="submit" style="margin-top: 1rem;" class="btn btn-outline-success" value="Prisijungimo kodai">
+                      </form></th>
                   </tr>
                 </table>
                 <table id="myTable" class="table" style="width: 100%;">

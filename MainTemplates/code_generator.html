@@ -1,0 +1,47 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+          <div class="container">
+            <div class="row"  style="height: 10%;">
+                <div class="col-lg-12 projects-headtitle">Nariai</div>
+                {% if  user.is_superuser %}
+                <table style="margin-top: 1rem;">
+                  <tr>
+                    <form action="code_generator" method="post">
+                    <th scope="col" style="display: flex; justify-content: space-between"><div>Kiekis:</div> <input style="width: 50%" class="form-control" type="number" value="1" name="kiek" ></th>
+                      <th scope="col">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-outline-success" value="Generuoti kodą">
+                      </th>
+                      <th scope="col"></th>
+                    </form>
+                  </tr>
+                </table>
+                <table id="myTable" class="table" style="width: 100%;">
+                    <thead>
+                    <tr class="header">
+                        <th scope="col">Kodas</th>
+                        <th scope="col">Likes kiekis</th>
+                        <th style="width: 10%;" scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for kodas in kodai %}
+                          <tr>
+                              <td>{{kodas.kodas}}</td>
+                              <td>{{kodas.kiek}}</td>
+                              <form action="delete_code" method="post">
+                                  {% csrf_token %}
+                                <td><button class="btn btn-outline-danger" type="submit" name="nothing" >Delete</button></td>
+                                <td style="display: none;"><input value="{{kodas.id}}" name="id"></td>
+                            </form> 
+                          </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+          </div>
+          
+
+{% endblock content %}

@@ -47,3 +47,8 @@ class projectUABs(models.Model):
     projectId = models.IntegerField()
     pavadinimasProject = models.CharField(max_length=100)
     tipas = models.CharField(max_length=50)
+
+class kodai(models.Model):
+    id = models.AutoField(primary_key=True, editable=False, null=False)
+    kodas = models.TextField(max_length=20)
+    kiek = models.IntegerField()

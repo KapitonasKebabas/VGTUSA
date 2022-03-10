@@ -30,5 +30,8 @@ urlpatterns = [
     path('delete_project', views.delete_project, name='delete_project'),
     path('projectUab_delete', views.projectUab_delete, name='projectUab_delete'),
     path('to_edit_uab', views.to_edit_uab, name='to_edit_uab'),
-    path('edit_uab', views.edit_uab, name='edit_uab')
+    path('edit_uab', views.edit_uab, name='edit_uab'),
+    path('to_code_generator', views.to_code_generator, name='to_code_generator'),
+    path('code_generator', views.code_generator, name='code_generator'),
+    path('delete_code', views.delete_code, name='delete_code')
 ]
