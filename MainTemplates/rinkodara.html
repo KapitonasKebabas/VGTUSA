@@ -11,9 +11,18 @@
                 {% else %}
                   <div class="col-lg-2" style="align-self: center;"><a href="toAddUAB"><button type="button" class="btn btn-success">Prideti</button></a></div>
                 {% endif %}
-                <table class="table" style="width: 100%;">
+                <table style="margin-top: 1rem;">
+                <tr>
+                    <th scope="col"><input type="text" class="form-control" id="myInput_name" onkeyup="myFunction(0)" placeholder="Ieškoti pagal vardą..." title="Type in a name"></th>
+                    <th scope="col"><input type="text" class="form-control" id="myInput_type" onkeyup="myFunction(1)" placeholder="Ieškoti pagal tipą..." title="Type in a type"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+              </table>
+                <table id="myTable" class="table" style="width: 100%;">
                     <thead>
-                    <tr>
+                    <tr class="header">
                         <th scope="col">Pavadinimas</th>
                         <th scope="col">Tipas</th>
                         <th class="d-none d-md-table-cell" scope="col">Email</th>
@@ -53,5 +62,34 @@
                 </table>
             </div>
           </div>
+          <script>
+            function myFunction(x) {
+              var input, filter, table, tr, td, i, txtValue, filterId;
+              if(x==0)
+              {
+                filterId = "myInput_name";
+              }
+              else if(x==1)
+              {
+                filterId = "myInput_type";
+              }
+              input = document.getElementById(filterId);
+              filter = input.value.toUpperCase();
+              table = document.getElementById("myTable");
+              tr = table.getElementsByTagName("tr");
+              for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[x];
+                if (td) {
+                  txtValue = td.textContent || td.innerText;
+                  console.log(txtValue)
+                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }       
+              }
+            }
+          </script>
 
 {% endblock content %}

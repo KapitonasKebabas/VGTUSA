@@ -3,9 +3,18 @@
           <div class="container">
             <div class="row"  style="height: 10%;">
                 <div class="col-lg-12 projects-headtitle">Projektai</div>
-                <table class="table" style="width: 100%;">
+                <table style="margin-top: 1rem;">
+                  <tr>
+                      <th scope="col"><input type="text" class="form-control" id="myInput_name" onkeyup="myFunction(0)" placeholder="Ieškoti pagal pavadinimą..." title="Type in a name"></th>
+                      <th class="d-none d-md-table-cell" scope="col"><input type="text" class="form-control" id="myInput_auth" onkeyup="myFunction(1)" placeholder="Ieškoti pagal vardą..." title="Type in a names"></th>
+                      <th class="d-none d-md-table-cell" scope="col"></th>
+                      <th class="d-none d-md-table-cell" scope="col"></th>
+                      <th class="d-none d-md-table-cell" scope="col"></th>
+                  </tr>
+                </table>
+                <table id="myTable" class="table" style="width: 100%;">
                     <thead>
-                    <tr>
+                    <tr class="header">
                         <th scope="col">Pavadinimas</th>
                         <th class="d-none d-md-table-cell" scope="col">Pgr. Organizatorius/ė</th>
                         <th class="d-none d-md-table-cell" scope="col">Renginio data</th>
@@ -41,4 +50,33 @@
                 </table>
             </div>
           </div>
+          <script>
+            function myFunction(x) {
+              var input, filter, table, tr, td, i, txtValue, filterId;
+              if(x==0)
+              {
+                filterId = "myInput_name";
+              }
+              else if(x==1)
+              {
+                filterId = "myInput_auth";
+              }
+              input = document.getElementById(filterId);
+              filter = input.value.toUpperCase();
+              table = document.getElementById("myTable");
+              tr = table.getElementsByTagName("tr");
+              for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[x];
+                if (td) {
+                  txtValue = td.textContent || td.innerText;
+                  console.log(txtValue)
+                  if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                  } else {
+                    tr[i].style.display = "none";
+                  }
+                }       
+              }
+            }
+          </script>
 {% endblock content %}
