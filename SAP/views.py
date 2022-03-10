@@ -228,7 +228,7 @@ def projectAdd(request):
         
         other = userProjectsSql.objects.filter(userId=userId).last()
         if userProjectsSql.objects.filter(userId=userId).exists():
-            other.projectsId = "," + str(projectId)
+            other.projectsId = other.projectsId + "," + str(projectId)
             other.save()
 
         return projectlook(request, projectId)
