@@ -32,7 +32,7 @@
                     <div class="join-button" style="float: right; margin: 1rem;"><button type="submit" class="btn btn-success">Prisijungti</button></div>
                   </form>
                 </div>
-                {% elif NotMyProject %}
+                {% else %}
                 <div class="col">
                   <form action="leave_project" method="POST">
                     {% csrf_token %}
