@@ -49,8 +49,9 @@ def login(request):
 def register(request):
 
     if request.method == 'POST':
-        
+
         if User.objects.count() > 0:
+            kodas = request.POST['code']
             if not kodaiSql.objects.filter(kodas=kodas).exists():
                 messages.info(request,'Neteisingas/Negaliojantis kodas')
                 return redirect('register')
@@ -61,7 +62,6 @@ def register(request):
             else:
                 kodasSql.save()
 
-        kodas = request.POST['code']
         username = request.POST['username']
         email = request.POST['email']
         password1 = hashlib.sha256(request.POST['password1'].encode()).hexdigest()
