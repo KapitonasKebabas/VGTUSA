@@ -61,12 +61,13 @@ def register(request):
         firstname = request.POST['name']
         lastname = request.POST['surname']
 
-        kodasSql = kodaiSql.objects.filter(kodas=kodas).last()
-        kodasSql.kiek = kodasSql.kiek - 1
-        if kodasSql.kiek <= 0:
-            kodasSql.delete()
-        else:
-            kodasSql.save()
+        if User.objects.count() > 0:
+            kodasSql = kodaiSql.objects.filter(kodas=kodas).last()
+            kodasSql.kiek = kodasSql.kiek - 1
+            if kodasSql.kiek <= 0:
+                kodasSql.delete()
+            else:
+                kodasSql.save()
 
         if lastname == "" or firstname == "" or email == "" or username == "":
             messages.info(request,'Reikai užpildyti visus laukus')
