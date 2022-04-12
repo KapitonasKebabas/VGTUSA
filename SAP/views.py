@@ -49,11 +49,19 @@ def login(request):
 def register(request):
 
     if request.method == 'POST':
+        
+        if User.objects.count() > 0:
+            if not kodaiSql.objects.filter(kodas=kodas).exists():
+                messages.info(request,'Neteisingas/Negaliojantis kodas')
+                return redirect('register')
+            kodasSql = kodaiSql.objects.filter(kodas=kodas).last()
+            kodasSql.kiek = kodasSql.kiek - 1
+            if kodasSql.kiek <= 0:
+                kodasSql.delete()
+            else:
+                kodasSql.save()
 
         kodas = request.POST['code']
-        if not kodaiSql.objects.filter(kodas=kodas).exists():
-            messages.info(request,'Neteisingas/Negaliojantis kodas')
-            return redirect('register')
         username = request.POST['username']
         email = request.POST['email']
         password1 = hashlib.sha256(request.POST['password1'].encode()).hexdigest()
@@ -61,13 +69,6 @@ def register(request):
         firstname = request.POST['name']
         lastname = request.POST['surname']
 
-        if User.objects.count() > 0:
-            kodasSql = kodaiSql.objects.filter(kodas=kodas).last()
-            kodasSql.kiek = kodasSql.kiek - 1
-            if kodasSql.kiek <= 0:
-                kodasSql.delete()
-            else:
-                kodasSql.save()
 
         if lastname == "" or firstname == "" or email == "" or username == "":
             messages.info(request,'Reikai užpildyti visus laukus')
