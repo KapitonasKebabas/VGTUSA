@@ -47,7 +47,12 @@
                               {% if prideti %}
                               <form action="uab_add_project" method="post">
                                 {% csrf_token %}
+                                {{projectUABsId.id}} - {{infoUAB.id}} ->
+                                {% if projectUABsId.id == infoUAB.id %}
+                                <td><button class="btn btn-secondary" type="submit" name="nothing" >Prideti</button></td>
+                                {% else %}
                                 <td><button class="btn btn-outline-success" type="submit" name="nothing" >Prideti</button></td>
+                                {% endif %}
                                 <td style="display: none;"><input value="{{projectId}}" name="projectId"></td>
                                 <td style="display: none;"><input value="{{infoUAB.id}}" name="uabId"></td>
                               </form>

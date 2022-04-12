@@ -33,5 +33,6 @@ urlpatterns = [
     path('edit_uab', views.edit_uab, name='edit_uab'),
     path('to_code_generator', views.to_code_generator, name='to_code_generator'),
     path('code_generator', views.code_generator, name='code_generator'),
-    path('delete_code', views.delete_code, name='delete_code')
+    path('delete_code', views.delete_code, name='delete_code'),
+    path('uab_changeConnect', views.uab_changeConnect, name='uab_changeConnect')
 ]

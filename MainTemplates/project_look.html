@@ -146,6 +146,9 @@
                   <tr>
                       <th scope="col">Pavadinimas</th>
                       <th scope="col">Tipas</th>
+                      <th scope="col">Email</th>
+                      <th style="width: 10%" scope="col"></th>
+                      <th scope="col">Susisiekta</th>
                       <th style="width: 10%" scope="col"></th>
                       <th style="width: 10%"  scope="col"></th>
                   </tr>
@@ -155,6 +158,18 @@
                         <tr>
                           <td>{{infoUAB.pavadinimasUAB}}</td>
                           <td>{{infoUAB.tipas}}</td>
+                          <td>{{infoUAB.email}}</td>
+                          <form action="uab_changeConnect" method="post">
+                            {% csrf_token %}
+                            <td><button class="btn btn-outline-info" type="submit" name="nothing" >Keisti</button></td>
+                            <td style="display: none;"><input value="{{infoUAB.UABid}}" name="id"></td>
+                            <td style="display: none;"><input value="{{infoUAB.projectId}}" name="projectId"></td>
+                          </form>
+                          {% if infoUAB.susisiekta == 1%}
+                          <td><i class="fa fa-check" aria-hidden="true" style="color: green;"></i></td>
+                          {% else %}
+                          <td><i class="fa fa-close" aria-hidden="true" style="color: rgb(230, 24, 24);"></i></td>
+                          {% endif %}
                           <form action="uab_lookout" method="get">
                             <td><button class="btn btn-outline-success" type="submit" name="nothing" >Perziureti</button></td>
                             <td style="display: none;"><input value="{{infoUAB.UABid}}" name="id"></td>

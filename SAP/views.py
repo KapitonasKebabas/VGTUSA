@@ -8,7 +8,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import get_user_model
 import hashlib
 from django.contrib import messages
-from .models import infoProject as projectSql, kodai
+from .models import infoProject as projectSql, kodai, projectUABs
 from .models import user_projects as userProjectsSql
 from .models import infoUAB as infoUABSql
 from .models import UABinfoTracker as infoUABTrackerSql
@@ -140,6 +140,9 @@ def rinkodaraHTML(request, prideti, projectId):
     if not isAuth(request):
         return render(request, 'login.html')
     infoUABs = infoUABSql.objects.all()
+    projectUABsId = projectUABsSql.objects.filter(projectId=projectId).all()
+
+    
     return render(request, 'rinkodara.html', {'infoUABs': infoUABs, 'prideti': prideti,'projectId': projectId})
 
 def project_lookout(request):
@@ -175,8 +178,7 @@ def projectlook(request, projectId):
     #PatikrinimasArYraliste
 
     #UABS
-    projectUABs = projectUABsSql.objects.filter(projectId=projectId).all()
-                
+    projectUABs = projectUABsSql.objects.filter(projectId=projectId).all()  
     return render(request, 'project_look.html', {'project': project,'projectUABs': projectUABs,'NotMyProject': NotMyProject,'yraList': yraList, 'projectId': projectId, 'projectPav': projectPav,'modArr': modArr,'userId': userId,'projectAuth': projectAuth,'userFName': userFName,'busena': busena})
 
 def uab_lookout(request):
@@ -248,7 +250,6 @@ def projectAdd(request):
         return projectlook(request, projectId)
     else:
         return projects(request)
-
 
 def busenos_keitimas(request):
     if not isAuth(request):
@@ -371,7 +372,7 @@ def uab_add_project(request):
     uab = infoUABSql.objects.filter(id=uabId).last()
     project = projectSql.objects.filter(id=projectId).last()
     if not projectUABsSql.objects.filter(UABid=uabId).exists():
-        projectUABsSqlPush = projectUABsSql(UABid=uabId,pavadinimasUAB=uab.pavadinimas,projectId=projectId,pavadinimasProject=project.pavadinimas,tipas=uab.tipas)
+        projectUABsSqlPush = projectUABsSql(UABid=uabId,pavadinimasUAB=uab.pavadinimas,projectId=projectId,pavadinimasProject=project.pavadinimas,tipas=uab.tipas,email=uab.email)
         projectUABsSqlPush.save()
 
         userId = auth.get_user(request).id
@@ -457,3 +458,12 @@ def delete_code(request):
 
     kodaiSql.objects.filter(id=id).delete()
     return redirect('to_code_generator')
+
+def uab_changeConnect(request):
+    id = request.POST['id']
+    projectId = request.POST['projectId']
+
+    projectUABsSqlPush = projectUABsSql.objects.filter(UABid=id).last()
+    projectUABsSqlPush.susisiekta = not projectUABsSqlPush.susisiekta
+    projectUABsSqlPush.save()
+    return projectlook(request,projectId)

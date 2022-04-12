@@ -47,6 +47,8 @@ class projectUABs(models.Model):
     projectId = models.IntegerField()
     pavadinimasProject = models.CharField(max_length=100)
     tipas = models.CharField(max_length=50)
+    susisiekta = models.BooleanField(default=False)
+    email = models.CharField(max_length=100, default="")
 
 class kodai(models.Model):
     id = models.AutoField(primary_key=True, editable=False, null=False)

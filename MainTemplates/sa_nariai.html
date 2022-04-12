@@ -23,7 +23,6 @@
                         <th scope="col">Vardas</th>
                         <th scope="col">Pavarde</th>
                         <th scope="col">Email</th>
-                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,10 +31,6 @@
                               <td>{{user.first_name}}</td>
                               <td>{{user.last_name}}</td>
                               <td>{{user.email}}</td>
-                              <form action="project_lookout" method="get">
-                                <td><button class="btn btn-link" type="submit" name="nothing" >Perziureti</button></td>
-                                <td style="display: none;"><input value="{{item.id}}" name="id"></td>
-                            </form> 
                           </tr>
                       {% endfor %}
                     </tbody>
