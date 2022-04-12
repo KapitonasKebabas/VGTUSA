@@ -462,6 +462,8 @@ def delete_code(request):
     return redirect('to_code_generator')
 
 def uab_changeConnect(request):
+    if not isAuth(request):
+        return render(request, 'login.html')
     id = request.POST['id']
     projectId = request.POST['projectId']
 

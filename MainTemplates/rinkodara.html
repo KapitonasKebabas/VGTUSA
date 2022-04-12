@@ -21,7 +21,7 @@
                     <th scope="col"></th>
                 </tr>
               </table>
-                <table id="myTable" class="table" style="width: 100%;">
+              <table id="myTable" class="table" style="width: 100%;">
                     <thead>
                     <tr class="header">
                         <th scope="col">Pavadinimas</th>
@@ -31,7 +31,7 @@
                         <th scope="col"></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
                       {% for infoUAB in infoUABs %}
                           <tr>
                               <td>{{infoUAB.pavadinimas}}</td>
@@ -47,7 +47,6 @@
                               {% if prideti %}
                               <form action="uab_add_project" method="post">
                                 {% csrf_token %}
-                                {{projectUABsId.id}} - {{infoUAB.id}} ->
                                 {% if projectUABsId.id == infoUAB.id %}
                                 <td><button class="btn btn-secondary" type="submit" name="nothing" >Prideti</button></td>
                                 {% else %}
